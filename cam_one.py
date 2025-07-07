@@ -15,6 +15,11 @@ import os
 import sys
 import io
 
+driver = None  # 전역 선언
+def init_driver():
+    global driver
+    driver = setup_driver()
+
 # 터미널에 로그출력
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -23,14 +28,14 @@ logger = logging.getLogger(__name__)
 def setup_driver():
     options = Options()
     options.add_experimental_option("detach", True)
-    options.add_argument("--headless") 
-    # options.add_argument('--start-maximized')
+    # options.add_argument("--headless") 
+    options.add_argument("--window-size=1920,1080")
     service = Service()
     driver = webdriver.Chrome(service=service, options=options)
     driver.implicitly_wait(3)
     return driver
 # 로그인
-def login(ip, driver, username, password):
+def login(ip, username, password):
     driver.get(ip)
     action = ActionChains(driver)
     driver.find_element(By.CSS_SELECTOR, '/html/body/div[1]/div[2]/div/form/p[1]/input').click()
@@ -39,7 +44,7 @@ def login(ip, driver, username, password):
     time.sleep(5)
     logger.info('login success')
 # 설정로그인 + 비디오 스트림 3, 4 h.264로 설정
-def loginop(ip, driver, username, password):
+def loginop(ip, username, password):
     driver.get(ip)
     time.sleep(5)
     try:
@@ -80,44 +85,42 @@ def loginop(ip, driver, username, password):
     logger.info('Stream 3, 4 Codec Change Complete')
 
 # 탭 호출 > 라이브
-def tab_l(driver):
+def tab_l():
     driver.find_element(By.CSS_SELECTOR, '/html/body/div[1]/div/button').click()
     driver.find_element(By.CSS_SELECTOR, '/html/body/div[2]/div[1]/div[1]/div[1]/a[1]').click()
     logger.info('Go to Live Mode')
 
 # 탭 호출 > 플레이백
-def tab_p(driver):
+def tab_p():
     driver.find_element(By.CSS_SELECTOR, '/html/body/div[1]/div/button').click()
     driver.find_element(By.CSS_SELECTOR, '/html/body/div[2]/div[1]/div[1]/div[1]/a[2]').click()
     logger.info('Go to Playback Mode')
 
 # 탭 호출 > 설정
-def tab_o(driver):
+def tab_o():
     driver.find_element(By.CSS_SELECTOR, '/html/body/div[1]/div/button').click()
     driver.find_element(By.CSS_SELECTOR, '/html/body/div[2]/div[1]/div[1]/div[1]/a[3]').click()
     logger.info('Go to Options')
 
 # 탭 호출 > 로그아웃
-def tab_bye(driver):
+def tab_bye():
     driver.find_element(By.CSS_SELECTOR, '/html/body/div[1]/div/button').click()
     driver.find_element(By.CSS_SELECTOR, '/html/body/div[2]/div[1]/div[1]/div[1]/a[4]').click()
     logger.info('Logout Complete')
 
 # 설정 > 비디오 스트림 진입
-def op_stream(driver):
-    try:
-        element = driver.find_element(By.CSS_SELECTOR, '#sidebar > ul > li:nth-child(2)')
-        element.click()
-        time.sleep(3)
-        element = driver.find_element(By.CSS_SELECTOR, '#sidebar > ul > li.open > ul > li:nth-child(2) > a')
-        element.click()
-        time.sleep(3)
-    except Exception as e:
-        print(f"Error: {e}")
+def op_stream():
+    time.sleep(5)
+    element = driver.find_element(By.CSS_SELECTOR, '#sidebar > ul > li:nth-child(2)')
+    element.click()
+    time.sleep(3)
+    element = driver.find_element(By.CSS_SELECTOR, '#sidebar > ul > li.open > ul > li:nth-child(2) > a')
+    element.click()
+    time.sleep(3)
     logger.info('Options > Video Stream Now')
 
 # 플레이백 > 비디오 스트림 진입
-def op_stream_pb(driver):
+def op_stream_pb():
     try:
         element = driver.find_element(By.XPATH, '//*[@id="menu_button"]')
         element.click()
@@ -136,7 +139,7 @@ def op_stream_pb(driver):
 
 
 # 저장소 겹쳐쓰기 설정
-def reckeep(driver):
+def reckeep():
     element = driver.find_element(By.XPATH, '//*[@id="sidebar"]/ul/li[4]/a')
     element.click()
     element = driver.find_element(By.XPATH, '//*[@id="tab-record"]/div[1]/label/div')
@@ -146,7 +149,7 @@ def reckeep(driver):
     logger.info('Keep Save Mode On')
 
 # 이벤트 녹화 사용설정-비디오 스트림1
-def recon(driver):
+def recon():
     try:
         element = driver.find_element(By.XPATH, '//*[@id="sidebar"]/ul/li[5]/a')
         element.click()
@@ -165,7 +168,7 @@ def recon(driver):
     logger.info('Event Rec On with Video Stream1')
 
 # 이벤트 녹화 사용설정-비디오 스트림2
-def recon2(driver):
+def recon2():
     try:
         element = driver.find_element(By.XPATH, '//*[@id="menu_button"]')
         element.click()
@@ -189,7 +192,7 @@ def recon2(driver):
     logger.info('Event Rec On with Video Stream2')
 
 # 이벤트 녹화 사용설정-비디오 스트림3
-def recon3(driver):
+def recon3():
     try:
         # element = driver.find_element(By.XPATH, '//*[@id="menu_button"]')
         # element.click()
@@ -213,7 +216,7 @@ def recon3(driver):
     logger.info('Event Rec On with Video Stream3')
 
 # 이벤트 녹화 사용설정-비디오 스트림4
-def recon4(driver):
+def recon4():
     try:
         # element = driver.find_element(By.XPATH, '//*[@id="menu_button"]')
         # element.click()
@@ -237,7 +240,7 @@ def recon4(driver):
     logger.info('Event Rec On with Video Stream4')
 
 # 이벤트 녹화 설정(타이머)
-def rectimer(driver):
+def rectimer():
     WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[2]/div[1]/ul/li[5]/a'))).click()
     time.sleep(3)
     WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[2]/div[1]/ul/li[5]/ul/li[1]/a'))).click()
@@ -271,7 +274,7 @@ def rectimer(driver):
     logger.info('Create Event Rule with Timer')
 
 # 이벤트 영상 추출하기
-def videosave(driver, videoname):
+def videosave(videoname):
     driver.find_element(By.XPATH, '//*[@id="sidebar-shortcuts-large"]/a[2]').click()
     rows = driver.find_elements(By.XPATH, '//tr[@role="row" and @id]')
     nowid = max(int(row.get_attribute('id')) for row in rows)
@@ -333,7 +336,7 @@ def info(videoname):
     return "\n".join(result)
 
 #cama-1
-def cama1(driver):
+def cama1():
     videoname = 'cama1'
     # 압축 방식 H.264 High
     select = Select(driver.find_element(By.CSS_SELECTOR,'#video_enc1_codec_list'))
@@ -363,12 +366,12 @@ def cama1(driver):
     driver.find_element(By.XPATH, '//*[@id="btnSaveSetup"]').click()
     logger.info('CAMa-1 TC Precondition Set Complete')
     time.sleep(150)
-    videosave(driver, videoname)
+    videosave(videoname)
     file_path = "D:\\Auto_test\\VIXcam_AutoTC.xlsx"
     excelsave(file_path, sheet_name="VIXcam_AutoTC", cell="E3", log_message = info(videoname))
 
 #cama-2
-def cama2(driver):
+def cama2():
     videoname = 'cama2'
     # 압축 방식 H.264 Main
     select = Select(driver.find_element(By.CSS_SELECTOR,'#video_enc1_codec_list'))
@@ -398,12 +401,12 @@ def cama2(driver):
     driver.find_element(By.XPATH, '//*[@id="btnSaveSetup"]').click()
     logger.info('CAMa-2 TC Precondition Set Complete')
     time.sleep(150)
-    videosave(driver, videoname)
+    videosave(videoname)
     file_path = "D:\\Auto_test\\VIXcam_AutoTC.xlsx"
     excelsave(file_path, sheet_name="VIXcam_AutoTC", cell="E4", log_message = info(videoname))
 
 # cama-3 압축방식 Smart
-def cama3(driver):
+def cama3():
     videoname = 'cama3'
     # 압축 방식 H.264 Main
     select = Select(driver.find_element(By.CSS_SELECTOR,'#video_enc1_codec_list'))
@@ -437,12 +440,12 @@ def cama3(driver):
     driver.find_element(By.XPATH, '//*[@id="btnSaveSetup"]').click()
     logger.info('CAMa-3 TC Precondition Set Complete')
     time.sleep(150)
-    videosave(driver, videoname)
+    videosave(videoname)
     file_path = "D:\\Auto_test\\VIXcam_AutoTC.xlsx"
     excelsave(file_path, sheet_name="VIXcam_AutoTC", cell="E5", log_message = info(videoname))
 
 # cama-4 
-def cama4(driver):
+def cama4():
     videoname = 'cama4'
     # 압축 방식 H.264 Smart
     select = Select(driver.find_element(By.CSS_SELECTOR,'#video_enc1_codec_list'))
@@ -476,12 +479,12 @@ def cama4(driver):
     driver.find_element(By.XPATH, '//*[@id="btnSaveSetup"]').click()
     logger.info('CAMa-4 TC Precondition Set Complete')
     time.sleep(150)
-    videosave(driver, videoname)
+    videosave(videoname)
     file_path = "D:\\Auto_test\\VIXcam_AutoTC.xlsx"
     excelsave(file_path, sheet_name="VIXcam_AutoTC", cell="E6", log_message = info(videoname))
 
 # cama-5 ************************비디오스트림2 필수지정!!*******************************
-def cama5(driver):
+def cama5():
     videoname = 'cama5'
     # 압축 방식 H.264 High
     select = Select(driver.find_element(By.CSS_SELECTOR,'#video_enc2_codec_list'))
@@ -511,12 +514,12 @@ def cama5(driver):
     driver.find_element(By.XPATH, '//*[@id="btnSaveSetup"]').click()
     logger.info('CAMa-5 TC Precondition Set Complete')
     time.sleep(150)
-    videosave(driver, videoname)
+    videosave(videoname)
     file_path = "D:\\Auto_test\\VIXcam_AutoTC.xlsx"
     excelsave(file_path, sheet_name="VIXcam_AutoTC", cell="E7", log_message = info(videoname))
 
 # cama-6
-def cama6(driver):
+def cama6():
     videoname = 'cama6'
 # 압축 방식 H.264 Main
     select = Select(driver.find_element(By.CSS_SELECTOR,'#video_enc2_codec_list'))
@@ -546,12 +549,12 @@ def cama6(driver):
     driver.find_element(By.XPATH, '//*[@id="btnSaveSetup"]').click()
     logger.info('CAMa-6 TC Precondition Set Complete')
     time.sleep(150)
-    videosave(driver, videoname)
+    videosave(videoname)
     file_path = "D:\\Auto_test\\VIXcam_AutoTC.xlsx"
     excelsave(file_path, sheet_name="VIXcam_AutoTC", cell="E8", log_message = info(videoname))
 
 # cama-7
-def cama7(driver):
+def cama7():
     videoname = 'cama7'
     # 압축 방식 H.264 Smart
     select = Select(driver.find_element(By.CSS_SELECTOR,'#video_enc2_codec_list'))
@@ -581,12 +584,12 @@ def cama7(driver):
     driver.find_element(By.XPATH, '//*[@id="btnSaveSetup"]').click()
     logger.info('CAMa-7 TC Precondition Set Complete')
     time.sleep(150)
-    videosave(driver, videoname)
+    videosave(videoname)
     file_path = "D:\\Auto_test\\VIXcam_AutoTC.xlsx"
     excelsave(file_path, sheet_name="VIXcam_AutoTC", cell="E9", log_message = info(videoname))
 
 # cama-8
-def cama8(driver):
+def cama8():
     videoname = 'cama8'
     # 압축 방식 H.264 MAIN
     select = Select(driver.find_element(By.CSS_SELECTOR,'#video_enc2_codec_list'))
@@ -616,12 +619,12 @@ def cama8(driver):
     driver.find_element(By.XPATH, '//*[@id="btnSaveSetup"]').click()
     logger.info('CAMa-8 TC Precondition Set Complete')
     time.sleep(150)
-    videosave(driver, videoname)
+    videosave(videoname)
     file_path = "D:\\Auto_test\\VIXcam_AutoTC.xlsx"
     excelsave(file_path, sheet_name="VIXcam_AutoTC", cell="E10", log_message = info(videoname))
 
 # cama-9
-def cama9(driver):
+def cama9():
     videoname = 'cama9'
     # 압축 방식 H.264 MAIN
     select = Select(driver.find_element(By.CSS_SELECTOR,'#video_enc2_codec_list'))
@@ -654,12 +657,12 @@ def cama9(driver):
     driver.find_element(By.XPATH, '//*[@id="btnSaveSetup"]').click()
     logger.info('CAMa-9 TC Precondition Set Complete')
     time.sleep(150)
-    videosave(driver, videoname)
+    videosave(videoname)
     file_path = "D:\\Auto_test\\VIXcam_AutoTC.xlsx"
     excelsave(file_path, sheet_name="VIXcam_AutoTC", cell="E11", log_message = info(videoname))
 
 # cama-10
-def cama10(driver):
+def cama10():
     videoname = 'cama10'
     # 압축 방식 H.264 MAIN
     select = Select(driver.find_element(By.CSS_SELECTOR,'#video_enc2_codec_list'))
@@ -692,12 +695,12 @@ def cama10(driver):
     driver.find_element(By.XPATH, '//*[@id="btnSaveSetup"]').click()
     logger.info('CAMa-10 TC Precondition Set Complete')
     time.sleep(150)
-    videosave(driver, videoname)
+    videosave(videoname)
     file_path = "D:\\Auto_test\\VIXcam_AutoTC.xlsx"
     excelsave(file_path, sheet_name="VIXcam_AutoTC", cell="E12", log_message = info(videoname))
 
 # cama-11 !!!!!비디오 스트림 3!!!!!
-def cama11(driver):
+def cama11():
     videoname = 'cama11'
     # 압축 방식 H.264 High
     select = Select(driver.find_element(By.CSS_SELECTOR,'#video_enc3_codec_list'))
@@ -730,12 +733,12 @@ def cama11(driver):
     driver.find_element(By.XPATH, '//*[@id="btnSaveSetup"]').click()
     logger.info('CAMa-11 TC Precondition Set Complete')
     time.sleep(150)
-    videosave(driver, videoname)
+    videosave(videoname)
     file_path = "D:\\Auto_test\\VIXcam_AutoTC.xlsx"
     excelsave(file_path, sheet_name="VIXcam_AutoTC", cell="E13", log_message = info(videoname))
 
 # cama-12
-def cama12(driver):
+def cama12():
     videoname = 'cama12'
     # 압축 방식 H.264 Main
     select = Select(driver.find_element(By.CSS_SELECTOR,'#video_enc3_codec_list'))
@@ -768,12 +771,12 @@ def cama12(driver):
     driver.find_element(By.XPATH, '//*[@id="btnSaveSetup"]').click()
     logger.info('CAMa-12 TC Precondition Set Complete')
     time.sleep(150)
-    videosave(driver, videoname)
+    videosave(videoname)
     file_path = "D:\\Auto_test\\VIXcam_AutoTC.xlsx"
     excelsave(file_path, sheet_name="VIXcam_AutoTC", cell="E14", log_message = info(videoname))
 
 # cama-13
-def cama13(driver):
+def cama13():
     videoname = 'cama13'
     # 압축 방식 H.264 Smart
     select = Select(driver.find_element(By.CSS_SELECTOR,'#video_enc3_codec_list'))
@@ -802,12 +805,12 @@ def cama13(driver):
     driver.find_element(By.XPATH, '//*[@id="btnSaveSetup"]').click()
     logger.info('CAMa-13 TC Precondition Set Complete')
     time.sleep(150)
-    videosave(driver, videoname)
+    videosave(videoname)
     file_path = "D:\\Auto_test\\VIXcam_AutoTC.xlsx"
     excelsave(file_path, sheet_name="VIXcam_AutoTC", cell="E15", log_message = info(videoname))
 
 # cama-14  !!!!!!!비디오스트림4!!!!!!!!!!!
-def cama14(driver):
+def cama14():
     videoname = 'cama14'
     # 압축 방식 H.264 High
     select = Select(driver.find_element(By.CSS_SELECTOR,'#video_enc4_codec_list'))
@@ -836,11 +839,11 @@ def cama14(driver):
     driver.find_element(By.XPATH, '//*[@id="btnSaveSetup"]').click()
     logger.info('CAMa-14 TC Precondition Set Complete')
     time.sleep(150)
-    videosave(driver, videoname)
+    videosave(videoname)
     file_path = "D:\\Auto_test\\VIXcam_AutoTC.xlsx"
     excelsave(file_path, sheet_name="VIXcam_AutoTC", cell="E16", log_message = info(videoname))
 
-def cama15(driver):
+def cama15():
     videoname = 'cama15'
     # 압축 방식 H.264 High
     select = Select(driver.find_element(By.CSS_SELECTOR,'#video_enc4_codec_list'))
@@ -872,11 +875,11 @@ def cama15(driver):
     driver.find_element(By.XPATH, '//*[@id="btnSaveSetup"]').click()
     logger.info('CAMa-15 TC Precondition Set Complete')
     time.sleep(150)
-    videosave(driver, videoname)
+    videosave(videoname)
     file_path = "D:\\Auto_test\\VIXcam_AutoTC.xlsx"
     excelsave(file_path, sheet_name="VIXcam_AutoTC", cell="E17", log_message = info(videoname))
 
-def cama16(driver):
+def cama16():
     videoname = 'cama16'
     # 압축 방식 H.264 Main
     select = Select(driver.find_element(By.CSS_SELECTOR,'#video_enc4_codec_list'))
@@ -908,11 +911,11 @@ def cama16(driver):
     driver.find_element(By.XPATH, '//*[@id="btnSaveSetup"]').click()
     logger.info('CAMa-16 TC Precondition Set Complete')
     time.sleep(150)
-    videosave(driver, videoname)
+    videosave(videoname)
     file_path = "D:\\Auto_test\\VIXcam_AutoTC.xlsx"
     excelsave(file_path, sheet_name="VIXcam_AutoTC", cell="E18", log_message = info(videoname))
 
-def cama17(driver):
+def cama17():
     videoname = 'cama17'
     # 압축 방식 H.264 Main
     select = Select(driver.find_element(By.CSS_SELECTOR,'#video_enc4_codec_list'))
@@ -944,14 +947,14 @@ def cama17(driver):
     driver.find_element(By.XPATH, '//*[@id="btnSaveSetup"]').click()
     logger.info('CAMa-17 TC Precondition Set Complete')
     time.sleep(150)
-    videosave(driver, videoname)
+    videosave(videoname)
     file_path = "D:\\Auto_test\\VIXcam_AutoTC.xlsx"
     excelsave(file_path, sheet_name="VIXcam_AutoTC", cell="E19", log_message = info(videoname))
 
 # # 테스트 진행 전 무조건 저장소 초기화, 시스템 초기화 후 비밀번호 초기 설정까지 완료하세요
 def main_rec(ip, username, password):
     driver = setup_driver()
-    loginop(ip, driver, username, password)
+    loginop(ip, username, password)
     time.sleep(5)
     recon(driver)
     time.sleep(5)

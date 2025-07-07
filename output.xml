@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.3.1 (Python 3.13.2 on win32)" generated="2025-07-07T15:46:58.081787" rpa="false" schemaversion="5">
+<suite id="s1" name="Vixcam Recording Test2" source="d:\robot\vixcam_recording_test2.robot">
+<kw name="Init Driver" owner="cam_one" type="SETUP">
+<status status="PASS" start="2025-07-07T15:46:59.725926" elapsed="2.029507"/>
+</kw>
+<test id="s1-t1" name="로그인" line="11">
+<kw name="Loginop" owner="cam_one">
+<msg time="2025-07-07T15:47:19.924711" level="INFO">option menu login complete</msg>
+<msg time="2025-07-07T15:47:37.482272" level="INFO">Stream 3, 4 Codec Change Complete</msg>
+<arg>${ip}</arg>
+<arg>${id}</arg>
+<arg>${pass}</arg>
+<status status="PASS" start="2025-07-07T15:47:01.758039" elapsed="35.724759"/>
+</kw>
+<status status="PASS" start="2025-07-07T15:47:01.756264" elapsed="35.727466"/>
+</test>
+<test id="s1-t2" name="녹화 시작_비디오스트림3" line="13">
+<kw name="Recon 3" owner="cam_one">
+<msg time="2025-07-07T15:47:53.004304" level="INFO">Event Rec On with Video Stream3</msg>
+<status status="PASS" start="2025-07-07T15:47:37.488892" elapsed="15.515957"/>
+</kw>
+<kw name="Op Stream" owner="cam_one">
+<msg time="2025-07-07T15:48:04.365513" level="INFO">Options &gt; Video Stream Now</msg>
+<status status="PASS" start="2025-07-07T15:47:53.005797" elapsed="11.360289"/>
+</kw>
+<kw name="Cama 11" owner="cam_one">
+<msg time="2025-07-07T15:48:22.624965" level="INFO">CAMa-11 TC Precondition Set Complete</msg>
+<msg time="2025-07-07T15:51:14.945754" level="INFO">File saved as cama11.mp4</msg>
+<msg time="2025-07-07T15:51:15.046114" level="INFO">already have directory, just only file</msg>
+<status status="PASS" start="2025-07-07T15:48:04.367045" elapsed="190.680060"/>
+</kw>
+<kw name="Op Stream Pb" owner="cam_one">
+<msg time="2025-07-07T15:51:24.867890" level="INFO">Playback &gt; Video Stream Now</msg>
+<status status="PASS" start="2025-07-07T15:51:15.048354" elapsed="9.820480"/>
+</kw>
+<kw name="Cama 12" owner="cam_one">
+<msg time="2025-07-07T15:51:43.616135" level="INFO">CAMa-12 TC Precondition Set Complete</msg>
+<msg time="2025-07-07T15:54:32.004343" level="INFO">File saved as cama12.mp4</msg>
+<msg time="2025-07-07T15:54:32.070071" level="INFO">already have directory, just only file</msg>
+<status status="PASS" start="2025-07-07T15:51:24.870025" elapsed="187.200861"/>
+</kw>
+<kw name="Op Stream Pb" owner="cam_one">
+<msg time="2025-07-07T15:54:41.850878" level="INFO">Playback &gt; Video Stream Now</msg>
+<status status="PASS" start="2025-07-07T15:54:32.072068" elapsed="9.779646"/>
+</kw>
+<kw name="Cama 13" owner="cam_one">
+<msg time="2025-07-07T15:54:57.401363" level="INFO">CAMa-13 TC Precondition Set Complete</msg>
+<msg time="2025-07-07T15:57:47.202732" level="INFO">File saved as cama13.mp4</msg>
+<msg time="2025-07-07T15:57:47.269000" level="INFO">already have directory, just only file</msg>
+<status status="PASS" start="2025-07-07T15:54:41.853324" elapsed="185.416860"/>
+</kw>
+<kw name="Op Stream Pb" owner="cam_one">
+<msg time="2025-07-07T15:57:56.952988" level="INFO">Playback &gt; Video Stream Now</msg>
+<status status="PASS" start="2025-07-07T15:57:47.272116" elapsed="9.681384"/>
+</kw>
+<status status="PASS" start="2025-07-07T15:47:37.485814" elapsed="619.468483"/>
+</test>
+<test id="s1-t3" name="녹화 시작_비디오스트림4" line="22">
+<kw name="Recon 4" owner="cam_one">
+<msg time="2025-07-07T15:58:12.545361" level="INFO">Event Rec On with Video Stream4</msg>
+<status status="PASS" start="2025-07-07T15:57:56.957284" elapsed="15.589004"/>
+</kw>
+<kw name="Op Stream" owner="cam_one">
+<msg time="2025-07-07T15:58:23.992785" level="INFO">Options &gt; Video Stream Now</msg>
+<status status="PASS" start="2025-07-07T15:58:12.547304" elapsed="11.446245"/>
+</kw>
+<kw name="Cama 14" owner="cam_one">
+<msg time="2025-07-07T15:58:39.411082" level="INFO">CAMa-14 TC Precondition Set Complete</msg>
+<msg time="2025-07-07T16:01:44.088262" level="INFO">File saved as cama14.mp4</msg>
+<msg time="2025-07-07T16:01:44.161374" level="INFO">already have directory, just only file</msg>
+<status status="PASS" start="2025-07-07T15:58:23.994764" elapsed="200.167368"/>
+</kw>
+<kw name="Op Stream Pb" owner="cam_one">
+<msg time="2025-07-07T16:01:53.979734" level="INFO">Playback &gt; Video Stream Now</msg>
+<status status="PASS" start="2025-07-07T16:01:44.163384" elapsed="9.816931"/>
+</kw>
+<kw name="Cama 15" owner="cam_one">
+<msg time="2025-07-07T16:02:09.653460" level="INFO">CAMa-15 TC Precondition Set Complete</msg>
+<msg time="2025-07-07T16:04:58.282395" level="INFO">File saved as cama15.mp4</msg>
+<msg time="2025-07-07T16:04:58.371307" level="INFO">already have directory, just only file</msg>
+<status status="PASS" start="2025-07-07T16:01:53.981416" elapsed="184.390826"/>
+</kw>
+<kw name="Op Stream Pb" owner="cam_one">
+<msg time="2025-07-07T16:05:08.261446" level="INFO">Playback &gt; Video Stream Now</msg>
+<status status="PASS" start="2025-07-07T16:04:58.373770" elapsed="9.888575"/>
+</kw>
+<kw name="Cama 16" owner="cam_one">
+<msg time="2025-07-07T16:05:23.843722" level="INFO">CAMa-16 TC Precondition Set Complete</msg>
+<msg time="2025-07-07T16:08:12.141897" level="INFO">File saved as cama16.mp4</msg>
+<msg time="2025-07-07T16:08:12.185274" level="INFO">already have directory, just only file</msg>
+<status status="PASS" start="2025-07-07T16:05:08.263613" elapsed="183.922368"/>
+</kw>
+<kw name="Op Stream Pb" owner="cam_one">
+<msg time="2025-07-07T16:08:21.756771" level="INFO">Playback &gt; Video Stream Now</msg>
+<status status="PASS" start="2025-07-07T16:08:12.187229" elapsed="9.570378"/>
+</kw>
+<kw name="Cama 17" owner="cam_one">
+<msg time="2025-07-07T16:08:37.132223" level="INFO">CAMa-17 TC Precondition Set Complete</msg>
+<msg time="2025-07-07T16:11:25.592462" level="INFO">File saved as cama17.mp4</msg>
+<msg time="2025-07-07T16:11:25.657622" level="INFO">already have directory, just only file</msg>
+<status status="PASS" start="2025-07-07T16:08:21.758679" elapsed="183.899805"/>
+</kw>
+<status status="PASS" start="2025-07-07T15:57:56.955824" elapsed="808.704296"/>
+</test>
+<status status="PASS" start="2025-07-07T15:46:58.095916" elapsed="1467.566984"/>
+</suite>
+<statistics>
+<total>
+<stat pass="3" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Vixcam Recording Test2" id="s1" pass="3" fail="0" skip="0">Vixcam Recording Test2</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

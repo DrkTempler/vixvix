@@ -250,7 +250,7 @@ def login_fail_test(ip, username):
     # driver.get('http://' + input('ip주소를 입력하세요'))
     time.sleep(5)
     # 최대 시도 스펙 바뀌면 바꾸세염
-    max_attempts = 5
+    max_attempts = 100
     for attempt in range(1, max_attempts + 1):
         print(f"{attempt}회 로그인 시도중")
         time.sleep(5)
@@ -270,6 +270,8 @@ def login_fail_test(ip, username):
 
         driver.find_element(By.CSS_SELECTOR, '#user').clear()
         driver.find_element(By.CSS_SELECTOR, '#pwd').clear()
+    time.sleep(300)
+    capture_picture("login_fail_test_Timeup")
 
 ###라이브 페이지 자동화###
 # 줌인&아웃 시나리오
@@ -389,7 +391,6 @@ def focus():
 def livestream():
     # 사이드바 출현여부
     element = driver.find_element(By.CSS_SELECTOR, '#menu_button')
-    element.click()
     element.click()
     wait = WebDriverWait(driver, 10)
     sidebar = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="sidebar"]')))
@@ -1289,8 +1290,15 @@ def login_time(username, password):
     time.sleep(2)
     element = driver.find_element(By.XPATH, '//*[@id="sidebar"]/ul/li[6]/ul/li[2]/a')
     element.click()
-    print("Option > Date&Time now")
-    time.sleep(2)
+    try:
+        #팝업이 뜰수도있어요. 그걸 처리해주는 구문임
+        pop = driver.find_element(By.CSS_SELECTOR, 'body > div.sweet-alert.showSweetAlert.visible')
+        element = driver.find_element(By.XPATH, '/html/body/div[4]/div[7]/button[2]') 
+        element.click()
+    except NoSuchElementException:
+        print("Option > Date&Time now")
+        time.sleep(2)
+    
     capture_picture("date_time_main")
 
 #컴퓨터 시간과 동기화 
@@ -1545,7 +1553,6 @@ def main_capture(ip, username, password):
     language_english()
     language_korean()
     login_fail_test(ip, username)
-    time.sleep(300)
     driver.refresh()
     time.sleep(5)
     login_auto_op(ip, username, password)

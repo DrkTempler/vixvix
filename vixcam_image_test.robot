@@ -3,10 +3,11 @@ Library    cam_two.py
 Library    SeleniumLibrary
 Suite Setup    init_driver
 *** Variables ***
+${ip}    http://172.16.15.108
 
 *** Test Cases ***
 로그인 테스트
-    Login Option Image   http://172.16.15.108    admin   pass0001!
+    Login Option Image   ${ip}    admin   pass0001!
 비디오&이미지 - 비디오 입력 - PAL
     Video Source PAL
     Reset Fix    admin    pass0001!
